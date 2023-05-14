@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Game_of_Life
+comment0.text=\r\n\ Create\ Game_of_Life\ using\ text\ format.\r\n\r\n\ @author\ Charlie\ Chen\r\n\ @version\ 8/05/2023\r\n
+comment1.params=
+comment1.target=Game_of_Life()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Game_of_Life\r\n
+comment2.params=
+comment2.target=void\ Grid()
+numComments=3
