@@ -16,7 +16,6 @@ public class Game_of_Life
     int coordinateX = 0;
     int coordinateY = 0;
 
-    
     /**
      * Constructor for objects of class Game_of_Life
      */
@@ -80,6 +79,7 @@ public class Game_of_Life
         }
     }
 
+    
     void onOff()
     {
         System.out.println("");
@@ -126,16 +126,34 @@ public class Game_of_Life
 
     
     
-    
-    
-    
     void oneGeneration()
     {
-        System.out.println("");
-        System.out.println("You have selected a");
-        
+        /*
         savedGrid = grid;
         checkLiveCells();
+        grid = savedGrid;
+        displayGrid();
+
+        System.out.println("");
+        System.out.println("You have selected a");
+        System.out.println("This is the next generation");
+        menu();
+         */
+        for (int x = 0; x < gridSize; x++){
+            for(int y = 0; y < gridSize; y++){
+                savedGrid[x][y] = grid[x][y];
+            }
+            System.out.println(" ");
+        }
+        checkLiveCells();
+        System.out.println("\u000c");
+        for (int x = 0; x < gridSize; x++){
+            for(int y = 0; y < gridSize; y++){
+                System.out.print(savedGrid[x][y]);
+            }
+            System.out.println(" ");
+        }
+        instruction();
     }
 
     void checkLiveCells()
@@ -145,7 +163,7 @@ public class Game_of_Life
                 if(grid[x][y].equals(" O ")){                    
                     coordinateX = x;
                     coordinateY = y;
-                    
+
                     checkUnderpopulation();
                     rule2();
                     rule3();
@@ -169,6 +187,18 @@ public class Game_of_Life
         if(grid[coordinateX][coordinateY + 1].equals(" O ")){
             adjecentLiveCells += 1;
         }
+        if(grid[coordinateX - 1][coordinateY + 1].equals(" O ")){
+            adjecentLiveCells += 1;
+        }
+        if(grid[coordinateX - 1][coordinateY - 1].equals(" O ")){
+            adjecentLiveCells += 1;
+        }
+        if(grid[coordinateX + 1][coordinateY + 1].equals(" O ")){
+            adjecentLiveCells += 1;
+        }
+        if(grid[coordinateX + 1][coordinateY - 1].equals(" O ")){
+            adjecentLiveCells += 1;
+        }
         if(adjecentLiveCells < 2){
             savedGrid[coordinateX][coordinateY] = " - ";
         }
@@ -183,9 +213,6 @@ public class Game_of_Life
     void rule4(){
     }
 
-    
-    
-    
     
     
     void multipleGenertaion()
