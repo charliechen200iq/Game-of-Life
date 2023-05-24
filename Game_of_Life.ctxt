@@ -15,7 +15,6 @@ comment14.params=
 comment14.target=int\ numberOfAdjacentLiveCells()
 comment15.params=
 comment15.target=void\ multipleGenertaion()
-comment15.text=\ \ int\ adjecentLiveCells\ \=\ 0;\r\n\ \ \ \ if(grid[coordinateX\ -\ 1][coordinateY].equals("\ O\ ")){\r\n\ \ \ \ adjecentLiveCells\ +\=\ 1;\r\n\ \ \ \ }\r\n\ \ \ \ if(grid[coordinateX\ +\ 1][coordinateY].equals("\ O\ ")){\r\n\ \ \ \ adjecentLiveCells\ +\=\ 1;\r\n\ \ \ \ }\r\n\ \ \ \ if(grid[coordinateX][coordinateY\ -\ 1].equals("\ O\ ")){\r\n\ \ \ \ adjecentLiveCells\ +\=\ 1;\r\n\ \ \ \ }\r\n\ \ \ \ if(grid[coordinateX][coordinateY\ +\ 1].equals("\ O\ ")){\r\n\ \ \ \ adjecentLiveCells\ +\=\ 1;\r\n\ \ \ \ }\r\n\ \ \ \ if(grid[coordinateX\ -\ 1][coordinateY\ +\ 1].equals("\ O\ ")){\r\n\ \ \ \ adjecentLiveCells\ +\=\ 1;\r\n\ \ \ \ }\r\n\ \ \ \ if(grid[coordinateX\ -\ 1][coordinateY\ -\ 1].equals("\ O\ ")){\r\n\ \ \ \ adjecentLiveCells\ +\=\ 1;\r\n\ \ \ \ }\r\n\ \ \ \ if(grid[coordinateX\ +\ 1][coordinateY\ +\ 1].equals("\ O\ ")){\r\n\ \ \ \ adjecentLiveCells\ +\=\ 1;\r\n\ \ \ \ }\r\n\ \ \ \ if(grid[coordinateX\ +\ 1][coordinateY\ -\ 1].equals("\ O\ ")){\r\n\ \ \ \ adjecentLiveCells\ +\=\ 1;\r\n\ \ \ \ }\r\n\ \ \ \ if(adjecentLiveCells\ <\ 2){\r\n\ \ \ \ savedGrid[coordinateX][coordinateY]\ \=\ "\ -\ ";\r\n\ \ \ \ }\r\n
 comment16.params=
 comment16.target=void\ reset()
 comment17.params=
