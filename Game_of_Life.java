@@ -21,9 +21,7 @@ public class Game_of_Life
      */
     public Game_of_Life()
     {
-        initialGrid();
-        displayGrid();
-        menu();
+        startGame();
     }
 
     void initialGrid()
@@ -44,9 +42,20 @@ public class Game_of_Life
             }
             System.out.println(" ");
         }
-        instruction();
     }
 
+    void startGame(){
+        initialGrid();
+        displayGrid();
+        System.out.println("Welcome to Conway's Game of Life, press enter start the game.");
+        String input = keyboard.nextLine().toLowerCase();
+        
+        initialGrid();
+        displayGrid();
+        menu();
+    }
+
+    
     void instruction()
     {
         System.out.println("t - turning cells on:' o ' or off:' - '");
@@ -58,24 +67,25 @@ public class Game_of_Life
 
     void menu()
     {
+        instruction();
         System.out.println("select from menu: ");
         String input = keyboard.nextLine().toLowerCase();
         switch (input){
             case "t": onOff();
-            break;
+                break;
             case "a": oneGeneration();
-            break;
+                break;
             case "m": multipleGenertaion();
-            break;
+                break;
             case "r": reset();
-            break;
+                break;
             case "q": quit();
-            break;
+                break;
             default: 
-            System.out.println("");
-            System.out.println("Wrong input:(");
-            menu();
-            break;
+                System.out.println("");
+                System.out.println("Wrong input:(");
+                menu();
+                break;
         }
     }
 
@@ -204,31 +214,31 @@ public class Game_of_Life
             if(grid[coordinateX - 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX - 1][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX != 0 && coordinateY == 0){
+        } else if(coordinateY == 0){
             if(grid[coordinateX - 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX + 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX - 1][coordinateY + 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX][coordinateY + 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX + 1][coordinateY + 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX != 0 && coordinateY == (gridSize -1)){
+        } else if(coordinateY == (gridSize -1)){
             if(grid[coordinateX - 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX + 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX - 1][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX + 1][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX == 0 && coordinateY != 0){
+        } else if(coordinateX == 0){
             if(grid[coordinateX][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX][coordinateY + 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX + 1][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX + 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX + 1][coordinateY + 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX == (gridSize -1) && coordinateY != 0){
+        } else if(coordinateX == (gridSize -1)){
             if(grid[coordinateX][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX][coordinateY + 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX - 1][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX - 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX - 1][coordinateY + 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX != 0 && coordinateY != 0){
+        } else {
             if(grid[coordinateX - 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX + 1][coordinateY].equals(" O ")) numberOfAdjacentLiveCells += 1;
             if(grid[coordinateX][coordinateY - 1].equals(" O ")) numberOfAdjacentLiveCells += 1;
@@ -259,6 +269,6 @@ public class Game_of_Life
 
     void quit()
     {
-        System.out.println("q - quitting");
+        startGame();
     }
 }
