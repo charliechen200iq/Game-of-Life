@@ -15,6 +15,7 @@ public class Game_of_Life
 
     int coordinateX = 0;
     int coordinateY = 0;
+    int intervalSpeed = 500;
 
     /**
      * Constructor for objects of class Game_of_Life
@@ -22,6 +23,22 @@ public class Game_of_Life
     public Game_of_Life()
     {
         startGame();
+    }
+
+    void startGame(){
+        initialGrid();
+        System.out.println("\u000c");
+        for (int x = 0; x < gridSize; x++){
+            for(int y = 0; y < gridSize; y++){
+                System.out.print(grid[x][y]);
+            }
+            System.out.println(" ");
+        }
+        System.out.println("Welcome to Conway's Game of Life, press enter start the game.");
+        String input = keyboard.nextLine().toLowerCase();
+
+        displayGrid();
+        menu();
     }
 
     void initialGrid()
@@ -42,20 +59,9 @@ public class Game_of_Life
             }
             System.out.println(" ");
         }
+        instruction();
     }
 
-    void startGame(){
-        initialGrid();
-        displayGrid();
-        System.out.println("Welcome to Conway's Game of Life, press enter start the game.");
-        String input = keyboard.nextLine().toLowerCase();
-        
-        initialGrid();
-        displayGrid();
-        menu();
-    }
-
-    
     void instruction()
     {
         System.out.println("t - turning cells on:' o ' or off:' - '");
@@ -66,8 +72,7 @@ public class Game_of_Life
     }
 
     void menu()
-    {
-        instruction();
+    {   
         System.out.println("select from menu: ");
         String input = keyboard.nextLine().toLowerCase();
         switch (input){
@@ -89,18 +94,20 @@ public class Game_of_Life
         }
     }
 
+    //commands 1: turns the cell on/off and display it 
     void onOff()
     {
         System.out.println("");
         System.out.println("you have selected t");
 
         getCoordinates("turn the cells on or off by enter its coordinate in the form - x,y");
-        newGrid();
+        switchCells();
         displayGrid();
 
         menu();
     }
 
+    //get the valid coordinates
     void getCoordinates(String prompt)
     {
         System.out.println(prompt);
@@ -109,10 +116,11 @@ public class Game_of_Life
             System.out.println("incorrect input :( " + prompt);
             numbers = keyboard.nextLine().split(",");
         }
-        coordinateX = Integer.parseInt(numbers[0]);
-        coordinateY = Integer.parseInt(numbers[1]);
+        coordinateX = Integer.parseInt(numbers[1]);
+        coordinateY = Integer.parseInt(numbers[0]);
     }
 
+    //checks that the coordinates are valid numbers
     boolean checkNumbers(String[] integers)
     {
         for (int i=0; i<integers.length;i++){
@@ -130,7 +138,8 @@ public class Game_of_Life
         return true;
     }
 
-    void newGrid(){
+    //change the cells to on/off
+    void switchCells(){
         if (grid[coordinateX][coordinateY] == " - "){
             grid[coordinateX][coordinateY] = " O ";
         } else{
@@ -138,8 +147,18 @@ public class Game_of_Life
         }
     }
 
+    //commands 2: advance to the next generation and display it 
     void oneGeneration()
     {
+        nextGeneration();
+        System.out.println("");
+        System.out.println("You have selected a");
+        System.out.println("This is the next generation");
+        menu();
+    }
+
+    //go to the next generation
+    void nextGeneration(){
         nextGenerationCells();
         for (int x = 0; x < gridSize; x++){
             for(int y = 0; y < gridSize; y++){
@@ -147,13 +166,9 @@ public class Game_of_Life
             }
         }
         displayGrid();
-
-        System.out.println("");
-        System.out.println("You have selected a");
-        System.out.println("This is the next generation");
-        menu();
     }
 
+    //gets all the cells for the next generations
     void nextGenerationCells()
     {
         for (int x = 0; x < gridSize; x++){
@@ -252,11 +267,38 @@ public class Game_of_Life
         return numberOfAdjacentLiveCells;
     }
 
+    //commands 3: advance mutiple generations and display it 
     void multipleGenertaion()
     {
-        System.out.println("m - advancing a provided number of generations");
+        System.out.println("");
+        System.out.println("you have selected m");
+        System.out.println("enter the number of generations you want to run");
+
+        int number = numberOfGenerations();
+        for (int i=0; i<number; i+=1){
+            nextGeneration();
+            try {
+                Thread.sleep(intervalSpeed);
+            } catch(Exception e) {
+                System.out.println("Looks like something went wrong");
+            }
+        }
+
+        menu();
     }
 
+    //get the number of generation to advance
+    int numberOfGenerations(){
+        while (!keyboard.hasNextInt()){
+            keyboard.nextLine();
+            System.out.print("Invalid input. Please enter number");
+        }
+        int number = keyboard.nextInt();
+        keyboard.nextLine();
+        return number;
+    }
+
+    //commands 4: reset all the cells to dead 
     void reset()
     {
         initialGrid();
@@ -267,6 +309,7 @@ public class Game_of_Life
         menu();
     }
 
+    //commands 5: quite the game and go back to starting screen
     void quit()
     {
         startGame();
