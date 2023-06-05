@@ -2,19 +2,25 @@
  * Create Game_of_Life using text format.
  *
  * @author Charlie Chen
- * @version 25/05/2023
+ * @version 30/05/2023
  */
 import java.util.Scanner;
 public class Game_of_Life
 {
     Scanner keyboard = new Scanner(System.in);
 
+    //the number of cells of the lenth of the grid  
     int gridSize = 30;
+    //2D array which store all the cells of the grid.
     String [][] grid = new String [gridSize][gridSize];
+    //a sperate 2D array which saves all the changes from the original grid; used when advancing a generation
     String [][] savedGrid = new String [gridSize][gridSize];
 
+    // saves the x coordinate of a cell when we want to do stuff with it
     int coordinateX = 0;
+    // saves the y coordinate of a cell when we want to do stuff with it
     int coordinateY = 0;
+    // how long each generation display for in milliseconds before moving to the next generation. 
     int intervalSpeed = 500;
 
     /**
@@ -25,11 +31,12 @@ public class Game_of_Life
         startGame();
     }
 
+    //starting screen of the game and when enter key pressed the game starts
     void startGame(){
         initialGrid();
         System.out.println("\u000c");
-        for (int x = 0; x < gridSize; x++){
-            for(int y = 0; y < gridSize; y++){
+        for (int y = 0; y < gridSize; y++){
+            for(int x = 0; x < gridSize; x++){
                 System.out.print(grid[x][y]);
             }
             System.out.println(" ");
@@ -37,24 +44,26 @@ public class Game_of_Life
         System.out.println("Welcome to Conway's Game of Life, press enter start the game.");
         String input = keyboard.nextLine().toLowerCase();
 
-        displayGrid();
+        displayScreen();
         menu();
     }
 
+    //This is the grid will all the cells turned to dead
     void initialGrid()
     {
-        for (int x = 0; x < gridSize; x++){
-            for(int y = 0; y < gridSize; y++){
+        for (int y = 0; y < gridSize; y++){
+            for(int x = 0; x < gridSize; x++){
                 grid[x][y] = " - ";
             }
         }
     }
 
-    void displayGrid()
+    //This function display the grid and instruction
+    void displayScreen()
     {
-        System.out.println("\u000c");
-        for (int x = 0; x < gridSize; x++){
-            for(int y = 0; y < gridSize; y++){
+        System.out.println("\u000c"); //clear the screen
+        for (int y = 0; y < gridSize; y++){
+            for(int x = 0; x < gridSize; x++){
                 System.out.print(grid[x][y]);
             }
             System.out.println(" ");
@@ -62,6 +71,7 @@ public class Game_of_Life
         instruction();
     }
 
+    //This is the instruction of the menu
     void instruction()
     {
         System.out.println("t - turning cells on:' o ' or off:' - '");
@@ -71,8 +81,9 @@ public class Game_of_Life
         System.out.println("q - quitting");
     }
 
+    //This is the menu which asks for input and turns the corresponding functions. 
     void menu()
-    {   
+    {  
         System.out.println("select from menu: ");
         String input = keyboard.nextLine().toLowerCase();
         switch (input){
@@ -86,7 +97,7 @@ public class Game_of_Life
                 break;
             case "q": quit();
                 break;
-            default: 
+            default:
                 System.out.println("");
                 System.out.println("Wrong input:(");
                 menu();
@@ -94,7 +105,7 @@ public class Game_of_Life
         }
     }
 
-    //commands 1: turns the cell on/off and display it 
+    //commands 1: turns the cell on/off and display it
     void onOff()
     {
         System.out.println("");
@@ -102,7 +113,7 @@ public class Game_of_Life
 
         getCoordinates("turn the cells on or off by enter its coordinate in the form - x,y");
         switchCells();
-        displayGrid();
+        displayScreen();
 
         menu();
     }
@@ -112,17 +123,19 @@ public class Game_of_Life
     {
         System.out.println(prompt);
         String[] numbers = keyboard.nextLine().split(",");
+        //make sure that the coordinates are in the form of x,y and the numbers are valid
         while (numbers.length !=2 || checkNumbers(numbers) != true){
             System.out.println("incorrect input :( " + prompt);
             numbers = keyboard.nextLine().split(",");
         }
-        coordinateX = Integer.parseInt(numbers[1]);
-        coordinateY = Integer.parseInt(numbers[0]);
+        coordinateX = Integer.parseInt(numbers[0]);
+        coordinateY = Integer.parseInt(numbers[1]);
     }
 
     //checks that the coordinates are valid numbers
     boolean checkNumbers(String[] integers)
     {
+        //checks if the input coordinates are actully numbers
         for (int i=0; i<integers.length;i++){
             for (int j=0; j<integers[i].length();j++){
                 if(integers[i].charAt(j) > '9' || integers[i].charAt(j) < '0'){
@@ -130,6 +143,7 @@ public class Game_of_Life
                 }
             }
         }
+        //cheks if the coordinates are within the limit
         for (int i=0; i<integers.length;i++){
             if(Integer.parseInt(integers[i]) > (gridSize-1) || Integer.parseInt(integers[i]) < 0){
                 return false;
@@ -147,7 +161,7 @@ public class Game_of_Life
         }
     }
 
-    //commands 2: advance to the next generation and display it 
+    //commands 2: advance to the next generation and display it
     void oneGeneration()
     {
         nextGeneration();
@@ -160,30 +174,30 @@ public class Game_of_Life
     //go to the next generation
     void nextGeneration(){
         nextGenerationCells();
-        for (int x = 0; x < gridSize; x++){
-            for(int y = 0; y < gridSize; y++){
+        for (int y = 0; y < gridSize; y++){
+            for(int x = 0; x < gridSize; x++){
                 grid[x][y] = savedGrid[x][y];
             }
         }
-        displayGrid();
+        displayScreen();
     }
 
     //gets all the cells for the next generations
     void nextGenerationCells()
     {
-        for (int x = 0; x < gridSize; x++){
-            for(int y = 0; y < gridSize; y++){
+        for (int y = 0; y < gridSize; y++){
+            for(int x = 0; x < gridSize; x++){
                 if(grid[x][y].equals(" O ")){                    
-                    // check if the live cell has <2 or 2/3 or >3 live adjacent cells
                     coordinateX = x;
                     coordinateY = y;
-
+                    
+                    // check if the live cell has <2 or 2/3 or >3 live adjacent cells
                     checkLiveCells();
                 } else {                    
-                    // check if the dead cell has 3 live adjacent cells
                     coordinateX = x;
                     coordinateY = y;
-
+                    
+                    // check if the dead cell has 3 live adjacent cells
                     checkDeadCells();
                 }
             }
@@ -267,7 +281,7 @@ public class Game_of_Life
         return numberOfAdjacentLiveCells;
     }
 
-    //commands 3: advance mutiple generations and display it 
+    //commands 3: advance mutiple generations and display it
     void multipleGenertaion()
     {
         System.out.println("");
@@ -298,18 +312,18 @@ public class Game_of_Life
         return number;
     }
 
-    //commands 4: reset all the cells to dead 
+    //commands 4: reset all the cells to dead
     void reset()
     {
         initialGrid();
-        displayGrid();
+        displayScreen();
         System.out.println("");
         System.out.println("you have selected r");
         System.out.println("the grid has been reset");
         menu();
     }
 
-    //commands 5: quite the game and go back to starting screen
+    //commands 5: quit the game and go back to starting screen
     void quit()
     {
         startGame();
