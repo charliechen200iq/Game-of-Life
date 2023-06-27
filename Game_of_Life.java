@@ -21,11 +21,13 @@ public class Game_of_Life
     String liveCell = "⬛ ";
 
     // saves the x coordinate of a cell when we want to do stuff with it
-    int coordinateX = 0;
+    int coordinateX;
     // saves the y coordinate of a cell when we want to do stuff with it
-    int coordinateY = 0;
+    int coordinateY;
     // how long each generation display for in milliseconds before moving to the next generation. 
     int intervalSpeed = 500;
+    // number of generations to run
+    int numberOfGenerations;
 
     /**
      * Constructor for objects of class Game_of_Life
@@ -45,7 +47,7 @@ public class Game_of_Life
             }
             System.out.println(" ");
         }
-        System.out.println("Welcome to Conway's Game of Life, press enter start the game.");
+        System.out.println("Welcome to Conway's Game of Life, enter anything to start the game.");
         String input = keyboard.nextLine().toLowerCase();
 
         displayScreen();
@@ -65,7 +67,7 @@ public class Game_of_Life
     //This function display the grid and instruction
     void displayScreen()
     {
-        System.out.println("\u000c"); //clear the screen
+        System.out.print("\u000c"); //clear the screen
         for (int y = 0; y < gridSize; y++){
             for(int x = 0; x < gridSize; x++){
                 System.out.print(grid[x][y]);
@@ -231,55 +233,14 @@ public class Game_of_Life
     //returns the number of adjacent live cells
     int numberOfAdjacentLiveCells(){
         int numberOfAdjacentLiveCells = 0;
-        if(coordinateX == 0 && coordinateY == 0){
-            if(grid[coordinateX + 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX == (gridSize -1) && coordinateY == 0){
-            if(grid[coordinateX - 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX == 0 && coordinateY == (gridSize -1)){
-            if(grid[coordinateX + 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX == (gridSize -1) && coordinateY == (gridSize -1)){
-            if(grid[coordinateX - 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateY == 0){
-            if(grid[coordinateX - 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateY == (gridSize -1)){
-            if(grid[coordinateX - 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX == 0){
-            if(grid[coordinateX][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-        } else if(coordinateX == (gridSize -1)){
-            if(grid[coordinateX][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-        } else {
-            if(grid[coordinateX - 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY - 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX - 1][coordinateY + 1].equals(liveCell)) numberOfAdjacentLiveCells += 1;
-            if(grid[coordinateX + 1][coordinateY + 1].equals(liveCell))numberOfAdjacentLiveCells += 1;
+        for(int dy = (coordinateY-1); dy <= (coordinateY+1); dy++){
+            for(int dx = (coordinateX-1); dx <= (coordinateX+1); dx++){
+                if(dx == coordinateX && dy == coordinateY){ //do nothing
+                } else if (dx < 0 || dx >= gridSize || dy < 0 || dy >= gridSize){//do nothing
+                } else if (grid[dx][dy].equals(liveCell)){ 
+                    numberOfAdjacentLiveCells += 1;
+                }
+            }
         }
 
         return numberOfAdjacentLiveCells;
@@ -291,9 +252,10 @@ public class Game_of_Life
         System.out.println("");
         System.out.println("you have selected m");
         System.out.println("enter the number of generations you want to run");
-
-        int number = numberOfGenerations();
-        for (int i=0; i<number; i+=1){
+        
+        numberOfGenerations(); //run this to the number of generation to advance
+        System.out.println(numberOfGenerations);
+        for(int i=0; i<numberOfGenerations; i+=1){
             nextGeneration();
             try {
                 Thread.sleep(intervalSpeed);
@@ -306,14 +268,18 @@ public class Game_of_Life
     }
 
     //get the number of generation to advance
-    int numberOfGenerations(){
-        while (!keyboard.hasNextInt()){
+    void numberOfGenerations(){
+        while(!keyboard.hasNextInt()){
             keyboard.nextLine();
-            System.out.print("Invalid input. Please enter number");
+            System.out.println("Invalid input. Please enter a number");
         }
-        int number = keyboard.nextInt();
+        numberOfGenerations = keyboard.nextInt();
         keyboard.nextLine();
-        return number;
+        
+        if(numberOfGenerations < 1 || numberOfGenerations > 100){
+            System.out.println("Invalid input. Please enter a number that's >1 and <100");
+            numberOfGenerations();
+        }
     }
 
     //commands 4: reset all the cells to dead
