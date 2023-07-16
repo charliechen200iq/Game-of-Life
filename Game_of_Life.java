@@ -251,19 +251,19 @@ public class Game_of_Life
     {
         System.out.println("");
         System.out.println("you have selected m");
-        System.out.println("enter the number of generations you want to run");
+        System.out.println("enter the number of generations (>1 and <100) you want to run");
         
         numberOfGenerations(); //run this to the number of generation to advance
         System.out.println(numberOfGenerations);
         for(int i=0; i<numberOfGenerations; i+=1){
             nextGeneration();
+            System.out.println("don't enter stuff until see 'select from menu:'");
             try {
                 Thread.sleep(intervalSpeed);
             } catch(Exception e) {
                 System.out.println("Looks like something went wrong");
             }
         }
-
         menu();
     }
 
