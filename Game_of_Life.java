@@ -2,30 +2,30 @@
  * Create Game_of_Life using text format.
  *
  * @author Charlie Chen
- * @version 30/05/2023
+ * @version 01/08/2023
  */
 import java.util.Scanner;
 public class Game_of_Life
 {
     Scanner keyboard = new Scanner(System.in);
 
-    //the number of cells of the lenth of the grid  
-    int gridSize = 30;
-    //2D array which store all the cells of the grid.
-    String [][] grid = new String [gridSize][gridSize];
+    //the number of cells of that make up the lenth of the grid  
+    final int GRID_SIZE = 30;
+    //2D array with all the cells of the grid to display
+    String [][] grid = new String [GRID_SIZE][GRID_SIZE];
     //a sperate 2D array which saves all the changes from the original grid; used when advancing a generation
-    String [][] savedGrid = new String [gridSize][gridSize];
+    String [][] savedGrid = new String [GRID_SIZE][GRID_SIZE];
     //dead cell
-    String deadCell = "⬜ ";
+    final String DEAD_CELL = "⬜ ";
     //live cell
-    String liveCell = "⬛ ";
+    final String LIVE_CELL = "⬛ ";
 
     // saves the x coordinate of a cell when we want to do stuff with it
     int coordinateX;
     // saves the y coordinate of a cell when we want to do stuff with it
     int coordinateY;
     // how long each generation display for in milliseconds before moving to the next generation. 
-    int intervalSpeed = 500;
+    final int INTERVAL_SPEED = 500;
     // number of generations to run
     int numberOfGenerations;
 
@@ -41,8 +41,8 @@ public class Game_of_Life
     void startGame(){
         initialGrid();
         System.out.print("\u000c");
-        for (int y = 0; y < gridSize; y++){
-            for(int x = 0; x < gridSize; x++){
+        for (int y = 0; y < GRID_SIZE; y++){
+            for(int x = 0; x < GRID_SIZE; x++){
                 System.out.print(grid[x][y]);
             }
             System.out.println(" ");
@@ -57,9 +57,9 @@ public class Game_of_Life
     //This is the grid will all the cells turned to dead
     void initialGrid()
     {
-        for (int y = 0; y < gridSize; y++){
-            for(int x = 0; x < gridSize; x++){
-                grid[x][y] = deadCell;
+        for (int y = 0; y < GRID_SIZE; y++){
+            for(int x = 0; x < GRID_SIZE; x++){
+                grid[x][y] = DEAD_CELL;
             }
         }
     }
@@ -68,8 +68,8 @@ public class Game_of_Life
     void displayScreen()
     {
         System.out.print("\u000c"); //clear the screen
-        for (int y = 0; y < gridSize; y++){
-            for(int x = 0; x < gridSize; x++){
+        for (int y = 0; y < GRID_SIZE; y++){
+            for(int x = 0; x < GRID_SIZE; x++){
                 System.out.print(grid[x][y]);
             }
             System.out.println(" ");
@@ -151,7 +151,7 @@ public class Game_of_Life
         }
         //cheks if the coordinates are within the limit
         for (int i=0; i<integers.length;i++){
-            if(Integer.parseInt(integers[i]) > (gridSize-1) || Integer.parseInt(integers[i]) < 0){
+            if(Integer.parseInt(integers[i]) > (GRID_SIZE-1) || Integer.parseInt(integers[i]) < 0){
                 return false;
             }
         }
@@ -160,10 +160,10 @@ public class Game_of_Life
 
     //change the cells to on/off
     void switchCells(){
-        if (grid[coordinateX][coordinateY] == deadCell){
-            grid[coordinateX][coordinateY] = liveCell;
+        if (grid[coordinateX][coordinateY] == DEAD_CELL){
+            grid[coordinateX][coordinateY] = LIVE_CELL;
         } else{
-            grid[coordinateX][coordinateY] = deadCell;
+            grid[coordinateX][coordinateY] = DEAD_CELL;
         }
     }
 
@@ -180,8 +180,8 @@ public class Game_of_Life
     //go to the next generation
     void nextGeneration(){
         nextGenerationCells();
-        for (int y = 0; y < gridSize; y++){
-            for(int x = 0; x < gridSize; x++){
+        for (int y = 0; y < GRID_SIZE; y++){
+            for(int x = 0; x < GRID_SIZE; x++){
                 grid[x][y] = savedGrid[x][y];
             }
         }
@@ -191,59 +191,59 @@ public class Game_of_Life
     //gets all the cells for the next generations
     void nextGenerationCells()
     {
-        for (int y = 0; y < gridSize; y++){
-            for(int x = 0; x < gridSize; x++){
-                if(grid[x][y].equals(liveCell)){                    
+        for (int y = 0; y < GRID_SIZE; y++){
+            for(int x = 0; x < GRID_SIZE; x++){
+                if(grid[x][y].equals(LIVE_CELL)){                    
                     coordinateX = x;
                     coordinateY = y;
                     
                     // check if the live cell has <2 or 2/3 or >3 live adjacent cells
-                    checkLiveCells();
+                    checkLIVE_CELLs();
                 } else {                    
                     coordinateX = x;
                     coordinateY = y;
                     
                     // check if the dead cell has 3 live adjacent cells
-                    checkDeadCells();
+                    checkDEAD_CELLs();
                 }
             }
         }
     }
 
     // check if the live cell has <2 or 2/3 or >3 live adjacent cells
-    void checkLiveCells(){
-        if(numberOfAdjacentLiveCells() < 2){
-            savedGrid[coordinateX][coordinateY] = deadCell;
-        } else if(numberOfAdjacentLiveCells() > 3){
-            savedGrid[coordinateX][coordinateY] = deadCell;
+    void checkLIVE_CELLs(){
+        if(numberOfAdjacentLIVE_CELLs() < 2){
+            savedGrid[coordinateX][coordinateY] = DEAD_CELL;
+        } else if(numberOfAdjacentLIVE_CELLs() > 3){
+            savedGrid[coordinateX][coordinateY] = DEAD_CELL;
         } else {
-            savedGrid[coordinateX][coordinateY] = liveCell;
+            savedGrid[coordinateX][coordinateY] = LIVE_CELL;
         }
     }
 
     // check if the dead cell has 3 live adjacent cells
-    void checkDeadCells(){
-        if(numberOfAdjacentLiveCells() == 3){
-            savedGrid[coordinateX][coordinateY] = liveCell;
+    void checkDEAD_CELLs(){
+        if(numberOfAdjacentLIVE_CELLs() == 3){
+            savedGrid[coordinateX][coordinateY] = LIVE_CELL;
         } else {
-            savedGrid[coordinateX][coordinateY] = deadCell;
+            savedGrid[coordinateX][coordinateY] = DEAD_CELL;
         }
     }
 
     //returns the number of adjacent live cells
-    int numberOfAdjacentLiveCells(){
-        int numberOfAdjacentLiveCells = 0;
+    int numberOfAdjacentLIVE_CELLs(){
+        int numberOfAdjacentLIVE_CELLs = 0;
         for(int dy = (coordinateY-1); dy <= (coordinateY+1); dy++){
             for(int dx = (coordinateX-1); dx <= (coordinateX+1); dx++){
                 if(dx == coordinateX && dy == coordinateY){ //do nothing
-                } else if (dx < 0 || dx >= gridSize || dy < 0 || dy >= gridSize){//do nothing
-                } else if (grid[dx][dy].equals(liveCell)){ 
-                    numberOfAdjacentLiveCells += 1;
+                } else if (dx < 0 || dx >= GRID_SIZE || dy < 0 || dy >= GRID_SIZE){//do nothing
+                } else if (grid[dx][dy].equals(LIVE_CELL)){ 
+                    numberOfAdjacentLIVE_CELLs += 1;
                 }
             }
         }
 
-        return numberOfAdjacentLiveCells;
+        return numberOfAdjacentLIVE_CELLs;
     }
 
     //commands 3: advance mutiple generations and display it
@@ -259,7 +259,7 @@ public class Game_of_Life
             nextGeneration();
             System.out.println("don't enter stuff until see 'select from menu:'");
             try {
-                Thread.sleep(intervalSpeed);
+                Thread.sleep(INTERVAL_SPEED);
             } catch(Exception e) {
                 System.out.println("Looks like something went wrong");
             }
