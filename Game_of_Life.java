@@ -97,7 +97,7 @@ public class Game_of_Life
                 break;
             case "a": oneGeneration();
                 break;
-            case "m": multipleGenertaion();
+            case "m": multipleGenerations();
                 break;
             case "r": reset();
                 break;
@@ -117,7 +117,7 @@ public class Game_of_Life
         System.out.println("");
         System.out.println("you have selected t");
 
-        getCoordinates("turn the cells on or off by enter its coordinate in the form - x,y");
+        getCoordinates("turn the cells on or off by enter its coordinate in the form of x,y");
         switchCells();
         displayScreen();
 
@@ -128,30 +128,37 @@ public class Game_of_Life
     void getCoordinates(String prompt)
     {
         System.out.println(prompt);
-        String[] numbers = keyboard.nextLine().split(",");
+        String[] coordinates = keyboard.nextLine().split(",");
         //make sure that the coordinates are in the form of x,y and the numbers are valid
-        while (numbers.length !=2 || checkNumbers(numbers) != true){
-            System.out.println("incorrect input :( " + prompt);
-            numbers = keyboard.nextLine().split(",");
+        while (coordinatesCheck(coordinates)!= true){ //robustness check
+            coordinates = keyboard.nextLine().split(",");
         }
-        coordinateX = Integer.parseInt(numbers[0]);
-        coordinateY = Integer.parseInt(numbers[1]);
+        //set the coordinateX and coordinateY to the inputted coordinates for further use
+        coordinateX = Integer.parseInt(coordinates[0]);
+        coordinateY = Integer.parseInt(coordinates[1]);
     }
 
-    //checks that the coordinates are valid numbers
-    boolean checkNumbers(String[] integerString)
+    //checks that the input are valid coordinates
+    boolean coordinatesCheck(String[] userInput)
     {
+        //checks if the 2 coordinates are inputted
+        if(userInput.length !=2){
+            System.out.println("incorrect input because it's not in correct format, must enter in the form of x,y");
+            return false;
+        }
         //checks if the input coordinates are actully numbers
-        for (int i=0; i<integerString.length; i++){
-            for (int j=0; j<integerString[i].length();j++){
-                if(integerString[i].charAt(j) > '9' || integerString[i].charAt(j) < '0'){
+        for (int i=0; i<userInput.length; i++){
+            for (int j=0; j<userInput[i].length();j++){
+                if(userInput[i].charAt(j) > '9' || userInput[i].charAt(j) < '0'){
+                    System.out.println("incorrect input because it's not a whole number, must enter a whole number from 0 onwards");
                     return false;
                 }
             }
         }
-        //cheks if the coordinates are within the limit
-        for (int i=0; i<integerString.length; i++){
-            if(Integer.parseInt(integerString[i]) > (GRID_SIZE-1) || Integer.parseInt(integerString[i]) < 0){
+        //cheks if the coordinates are within the grid size
+        for (int i=0; i<userInput.length; i++){
+            if(Integer.parseInt(userInput[i]) > (GRID_SIZE-1) || Integer.parseInt(userInput[i]) < 0){
+                System.out.println("incorrect input because it's not in valid range, must be 0 to " + (GRID_SIZE-1));
                 return false;
             }
         }
@@ -177,7 +184,7 @@ public class Game_of_Life
         menu();
     }
 
-    //advance to the next generation and display it
+    //advance to the next generation and display it(this function is also used to run mutiple generation later) 
     void nextGeneration(){
         nextGenerationCells(); //saves all of the cells for the next generations to the savedGrid
         for (int y = 0; y < GRID_SIZE; y++){ //put all this changes to the orginal grid
@@ -193,22 +200,19 @@ public class Game_of_Life
     {
         for (int y = 0; y < GRID_SIZE; y++){
             for(int x = 0; x < GRID_SIZE; x++){                 
-                coordinateX = x;
-                coordinateY = y;
-
-                if(grid[coordinateX][coordinateY].equals(LIVE_CELL)){// if it's a live cell then check if:                    
-                    if(numberOfAdjacentLIVE_CELLs() < 2){
-                        savedGrid[coordinateX][coordinateY] = DEAD_CELL;
-                    } else if(numberOfAdjacentLIVE_CELLs() > 3){
-                        savedGrid[coordinateX][coordinateY] = DEAD_CELL;
+                if(grid[x][y].equals(LIVE_CELL)){// if it's a live cell then change according to these rules:                    
+                    if(numberOfAdjacentLiveCells(x, y) < 2){
+                        savedGrid[x][y] = DEAD_CELL;
+                    } else if(numberOfAdjacentLiveCells(x, y) > 3){
+                        savedGrid[x][y] = DEAD_CELL;
                     } else {
-                        savedGrid[coordinateX][coordinateY] = LIVE_CELL;
+                        savedGrid[x][y] = LIVE_CELL;
                     }   
-                } else {// if it's a dead cell then check if:                    
-                    if(numberOfAdjacentLIVE_CELLs() == 3){
-                        savedGrid[coordinateX][coordinateY] = LIVE_CELL;
+                } else {// if it's a dead cell then change according to these rules:                    
+                    if(numberOfAdjacentLiveCells(x, y) == 3){
+                        savedGrid[x][y] = LIVE_CELL;
                     } else {
-                        savedGrid[coordinateX][coordinateY] = DEAD_CELL;
+                        savedGrid[x][y] = DEAD_CELL;
                     }
                 }
             }
@@ -216,23 +220,23 @@ public class Game_of_Life
     }
 
     //returns the number of adjacent live cells
-    int numberOfAdjacentLIVE_CELLs(){
-        int numberOfAdjacentLIVE_CELLs = 0;
-        for(int dy = (coordinateY-1); dy <= (coordinateY+1); dy++){
-            for(int dx = (coordinateX-1); dx <= (coordinateX+1); dx++){
-                if(dx == coordinateX && dy == coordinateY){ //do nothing
+    int numberOfAdjacentLiveCells(int x, int y){
+        int count = 0;
+        for(int dy = (y-1); dy <= (y+1); dy++){
+            for(int dx = (x-1); dx <= (x+1); dx++){
+                if(dx == x && dy == y){ //do nothing
                 } else if (dx < 0 || dx >= GRID_SIZE || dy < 0 || dy >= GRID_SIZE){//do nothing
                 } else if (grid[dx][dy].equals(LIVE_CELL)){ 
-                    numberOfAdjacentLIVE_CELLs += 1;
+                    count += 1;
                 }
             }
         }
 
-        return numberOfAdjacentLIVE_CELLs;
+        return count;
     }
 
     //commands "m": advance mutiple generations and display it
-    void multipleGenertaion()
+    void multipleGenerations()
     {
         System.out.println("");
         System.out.println("you have selected m");
@@ -243,7 +247,7 @@ public class Game_of_Life
             nextGeneration();
             System.out.println("don't enter stuff until see 'select from menu:'");
             try {
-                Thread.sleep(INTERVAL_SPEED);
+                Thread.sleep(INTERVAL_SPEED); //it displays the current generation for a certain time before moving to the next generation
             } catch(Exception e) {
                 System.out.println("Looks like something went wrong");
             }
@@ -260,8 +264,8 @@ public class Game_of_Life
         numberOfGenerations = keyboard.nextInt();
         keyboard.nextLine();
 
-        if(numberOfGenerations < 1 || numberOfGenerations > 100){ //make sure the number is within a valid range
-            System.out.println("Invalid input. Please enter a number that's >1 and <100");
+        if(numberOfGenerations < 1 || numberOfGenerations > 99){ //make sure the number is within a valid range
+            System.out.println("Invalid input becase it's not within in range. Please enter a number that's >0 and <100");
             numberOfGenerations();
         }
     }
@@ -269,8 +273,8 @@ public class Game_of_Life
     //commands "r": reset all the cells to dead
     void reset()
     {
-        initialGrid();
-        displayScreen();
+        initialGrid(); //set all of the cells to the initial grid (all dead)
+        displayScreen(); //display it
         System.out.println("");
         System.out.println("you have selected r");
         System.out.println("the grid has been reset");
