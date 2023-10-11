@@ -32,12 +32,13 @@ public class Game_of_Life
     /**
      * Constructor for objects of class Game_of_Life
      */
+    //start the game
     public Game_of_Life()
     {
         startGame();
     }
 
-    //starting screen of the game and when enter key pressed the game starts
+    //starting screen of the game and when the enter key pressed the game starts
     void startGame(){
         initialGrid();
         System.out.print("\u000c");
@@ -50,11 +51,12 @@ public class Game_of_Life
         System.out.println("Welcome to Conway's Game of Life, enter anything to start the game.");
         String input = keyboard.nextLine().toLowerCase();
 
+        //after enter key is pressed, the acutal starts
         displayScreen();
         menu();
     }
 
-    //This is the grid will all the cells turned to dead
+    //This is the initial grid that sets all the cells turned to dead
     void initialGrid()
     {
         for (int y = 0; y < GRID_SIZE; y++){
@@ -129,8 +131,8 @@ public class Game_of_Life
     {
         System.out.println(prompt);
         String[] coordinates = keyboard.nextLine().split(",");
-        //make sure that the coordinates are in the form of x,y and the numbers are valid
-        while (coordinatesCheck(coordinates)!= true){ //robustness check
+        //robustness chekc to make sure that the coordinates are in the form of x,y and the numbers are valid
+        while (coordinatesCheck(coordinates)!= true){
             coordinates = keyboard.nextLine().split(",");
         }
         //set the coordinateX and coordinateY to the inputted coordinates for further use
